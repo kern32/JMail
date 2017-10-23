@@ -3,7 +3,7 @@
  */
 window.setInterval(function () {
     getStatistic()
-}, 5000);
+}, 10000);
 
 $(document).ready(function () {
     $sender_table_header = "<thead>" +
@@ -41,7 +41,7 @@ function start() {
     document.getElementById("stop").disabled = false;
     document.getElementById("start").disabled = true;
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "./start", false); // false for synchronous request
+    xmlHttp.open("POST", "./jmail/start", false); // false for synchronous request
     xmlHttp.send();
     return xmlHttp.responseText;
 }
@@ -50,7 +50,7 @@ function stop() {
     document.getElementById("stop").disabled = true;
     document.getElementById("start").disabled = false;
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "./stop", false); // false for synchronous request
+    xmlHttp.open("POST", "./jmail/stop", false); // false for synchronous request
     xmlHttp.send();
     return xmlHttp.responseText;
 }
@@ -59,11 +59,11 @@ function getStatistic() {
     data = {"": ""};
     console.log("calling get statistic ajax");
     console.log("data: ", data);
-    console.log("link: ", "./get");
+    console.log("link: ", "./jmail/get");
     $.ajax({
-        type: "GET",
+        type: "POST",
         enctype : "multipart/form-data",
-        url: "./get",
+        url: "./jmail/get",
         data: data,
         processData: false,
         contentType: false,
@@ -163,14 +163,14 @@ function importReceivers() {
     };
     console.log("calling import receivers ajax");
     console.log("data: ", data);
-    console.log("link: ", "./import");
+    console.log("link: ", "./jmail/import");
     $.ajax({
         type : "POST",
         contentType : "application/json",
         data : JSON.stringify(data),
         dataType : 'json',
         timeout : 100000,
-        url : "./import",
+        url : "./jmail/import",
         success : function(data) {
             console.log("success: ", data);
             document.getElementById("import").disabled = false;

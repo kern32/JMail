@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="resources/css/bootstrap.css">
-    <link href="resources/css/main.css" rel="stylesheet">
-    <script src="resources/js/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="resources/js/main.js"></script>
+    <link rel="stylesheet" href="jmail/resources/css/bootstrap.css">
+    <link href="jmail/resources/css/main.css" rel="stylesheet">
+    <script src="jmail/resources/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="jmail/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jmail/resources/js/main.js"></script>
     <title>Mail Message Sending</title>
 </head>
 <body onload="init(); getStatistic();">
