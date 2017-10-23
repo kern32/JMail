@@ -10,11 +10,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import space.jmail.entity.FakeReceiver;
-import space.jmail.entity.ItemStatus;
-import space.jmail.entity.RealReceiver;
-import space.jmail.entity.ScheduleStatus;
+import space.jmail.scheduler.Scheduler;
+
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -44,8 +44,10 @@ public class FakeReceiverDao {
         List<FakeReceiver> fList = c.list();
         if (fList.size() == 1) {
             fReceiver = fList.get(0);
+            if(Scheduler.isEmailAlreadyPlannedForSending(fReceiver.getEmail())){
+                return null;
+            }
         }
-
         transaction.commit();
         session.close();
         log.info("return fake receiver: " + (fReceiver != null ? fReceiver.getEmail() : "null"));

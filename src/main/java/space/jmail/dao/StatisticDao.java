@@ -36,7 +36,7 @@ public class StatisticDao {
                 "s.`processed_status` as status, " +
                 "s.process_date as processDate, " +
                 "s.sent_letters as sentLetters, " +
-                "s.max_letters as maxLetters from  Sender s");
+                "s.max_letters as maxLetters from sender s");
         List list = query.list();
         transaction.commit();
         session.close();
