@@ -19,6 +19,7 @@ public class FakeSendJobExecuter implements Job {
         FakeReceiver receiver = (FakeReceiver) jobDataMap.get("receiver");
         Message message = (Message) jobDataMap.get("message");
 
+        Scheduler.removeEmailAsPlannedForSending(receiver.getEmail());
         SenderService senderService = new SenderService();
         senderService.send(sender, receiver, message);
     }

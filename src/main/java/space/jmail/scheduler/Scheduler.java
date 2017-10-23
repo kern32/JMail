@@ -6,9 +6,7 @@ import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.impl.StdSchedulerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import space.jmail.entity.*;
-import space.jmail.service.RealReceiverService;
 import space.jmail.util.Helper;
 
 import java.text.ParseException;
@@ -24,12 +22,17 @@ public class Scheduler {
     private static Logger log = Logger.getLogger("file");
     private static Date ressetDate = null;
     private static HashSet<org.quartz.Scheduler> schedulerSet = new HashSet();
+    public static HashSet<String> planningFakeEmails = new HashSet<>();
 
     public static String getRessetDate() {
         if(ressetDate != null){
             return new SimpleDateFormat().format(ressetDate);
         }
         return "reset date not initialized yet...";
+    }
+
+    public static void setRessetDate(Date ressetDate) {
+        Scheduler.ressetDate = ressetDate;
     }
 
     public static void clearAllJobs(){
@@ -40,6 +43,10 @@ public class Scheduler {
                 handleClearJobException(sch, e);
             }
         }
+    }
+
+    public static boolean isEmailAlreadyPlannedForSending(String email){
+        return planningFakeEmails.contains(email);
     }
 
     private static void handleClearJobException(org.quartz.Scheduler sch, SchedulerException e) {
@@ -126,10 +133,15 @@ public class Scheduler {
             scheduler.scheduleJob(messageDetail, trigger);
 
             schedulerSet.add(scheduler);
+            planningFakeEmails.add(fReceiver.getEmail());
         } catch (SchedulerException e) {
             e.printStackTrace();
             log.error("FakeSendJobExecuter: error while setting schedule for fake sending email, full stack trace follows:", e);
         }
+    }
+
+    public static void removeEmailAsPlannedForSending(String email) {
+        planningFakeEmails.remove(email);
     }
 }
 
