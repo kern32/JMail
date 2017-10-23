@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import space.jmail.entity.ExistenceType;
 import space.jmail.scheduler.Scheduler;
-import space.jmail.service.FakeReceiverService;
 import space.jmail.service.RealReceiverService;
 import space.jmail.service.SenderService;
 import space.jmail.service.StatService;
@@ -25,7 +24,7 @@ import space.jmail.util.Helper;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -45,14 +44,14 @@ public class WebAppController {
     private static Logger log = Logger.getLogger("file");
 
     @RequestMapping(value = {"/", "/index"}, method = GET)
-    public String index() {
+    public String index()  {
         return "index";
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/get", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public void getStatistic(HttpServletResponse response) throws IOException {
-        HashMap<String, Object> JSONROOT = new HashMap<String, Object>();
+        HashMap JSONROOT = new HashMap();
 
         JSONROOT.put("senderList", statService.getSenderListForStatistic());
         JSONROOT.put("realReceiverList", statService.getRealReceiverListForStatistic());
