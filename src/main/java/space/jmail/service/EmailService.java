@@ -66,7 +66,7 @@ public class EmailService {
     }
 
     private void manageSession() {
-        session = Session.getDefaultInstance(props,
+        session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(sender.getEmail(), sender.getPassword());
@@ -90,7 +90,7 @@ public class EmailService {
             String error = "Error while sending email " + receiver.getEmail() + "\n";
             logText += error ;
             logText += "---------------------------\n";
-            nSlog.error(error, e);
+            nSlog.error(logText, e);
             return false;
         }
     }

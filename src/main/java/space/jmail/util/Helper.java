@@ -127,19 +127,19 @@ public class Helper {
         return date;
     }
 
-    public static void logRealEmailScheduling(Sender sender, Receiver receiver, Date date, String type) {
+    public static void logEmailScheduling(Sender sender, Receiver receiver, Date date, String type) {
         log.info("Schedule email sending: " + type + " sender: " + sender.getEmail() + "; " +
                 " receiver: " + receiver.getEmail() + "; " +
                 " time: " + Helper.getFormattedDate(date));
     }
 
-    public static void logMessageReceiverNullable(Message message, RealReceiver realReceiver) {
+    public static void logMessageReceiverNullable(Message message, Receiver receiver, ExistenceType type) {
         String errMsg = "Error!! can't send email: ";
         if (message == null) {
             errMsg += "message is null; ";
         }
-        if (realReceiver == null) {
-            errMsg += "realReceiver is null";
+        if (receiver == null) {
+            errMsg += "receiver" + " with type: " + type.name() + " is null";
         }
         log.error(errMsg);
     }

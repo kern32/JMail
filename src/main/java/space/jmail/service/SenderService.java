@@ -85,21 +85,26 @@ public class SenderService extends Thread {
         Date date = Helper.getRandomCurrentDateTime();
 
         if (message == null || realReceiver == null) {
-            Helper.logMessageReceiverNullable(message, realReceiver);
+            Helper.logMessageReceiverNullable(message, realReceiver, ExistenceType.REAL);
             return;
         }
 
         try {
             Scheduler scheduler = new Scheduler();
-            Helper.logRealEmailScheduling(sender, realReceiver, date, ExistenceType.REAL.name());
+            Helper.logEmailScheduling(sender, realReceiver, date, ExistenceType.REAL.name());
             scheduler.setRealEmailSending(sender, realReceiver, message, date);
             realReceiverService.setReceiverAsPlannedForPlanning(realReceiver);
 
-            Date dateForFakeEmailSending = Helper.getDateForFakeEmailSending(date);
             FakeReceiver fReceiver = fakeReceiverService.getFirstRandomReceiver();
-            Message fMessage = messageService.getFirstRandomMessage(ExistenceType.FAKE);
-            Helper.logRealEmailScheduling(sender, realReceiver, dateForFakeEmailSending, ExistenceType.FAKE.name());
-            scheduler.setFakeEmailSending(sender, fReceiver, fMessage, dateForFakeEmailSending);
+            if(fReceiver != null){
+                Date dateForFakeEmailSending = Helper.getDateForFakeEmailSending(date);
+                Message fMessage = messageService.getFirstRandomMessage(ExistenceType.FAKE);
+                Helper.logEmailScheduling(sender, fReceiver, dateForFakeEmailSending, ExistenceType.FAKE.name());
+                scheduler.setFakeEmailSending(sender, fReceiver, fMessage, dateForFakeEmailSending);
+            } else {
+                Helper.logMessageReceiverNullable(message, fReceiver, ExistenceType.FAKE);
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
             log.error("Error while scheduling email sending", e);

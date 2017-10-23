@@ -53,6 +53,7 @@ public class WebStarter {
             log.info("receive manager stopped...");
             Scheduler.clearAllJobs();
             senderService.setPlannedEmailsAsNotPlanned();
+            Scheduler.setRessetDate(null);
             sendingFlag = false;
         }
     }
